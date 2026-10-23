@@ -44,6 +44,15 @@ vi.doMock('../../resources/js/hooks/use-stash', () => ({
     useHasStash: () => true,
     moveCaretToEnd: vi.fn(),
 }));
+vi.doMock('../../resources/js/components/composer-preview', async () => ({
+    ...(await vi.importActual(
+        '../../resources/js/components/composer-preview',
+    )),
+    useComposerPreview: () => ({
+        isPreviewing: false,
+        handleShortcut: () => false,
+    }),
+}));
 
 const { Form } = await import('@inertiajs/react');
 const { CommitQuoteButton } =
