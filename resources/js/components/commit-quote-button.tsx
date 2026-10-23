@@ -167,7 +167,11 @@ function QuoteComposer({
     return (
         <DialogContent
             onEscapeKeyDown={(event) => {
-                if (document.querySelector('[data-mention-suggestions]')) {
+                if (
+                    document.querySelector('[data-mention-suggestions]') ||
+                    (event.target instanceof Element &&
+                        event.target.closest('[data-composer-preview]'))
+                ) {
                     event.preventDefault();
                 }
             }}

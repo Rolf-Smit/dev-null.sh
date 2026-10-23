@@ -189,6 +189,7 @@ export function ComposerPreviewBody({
             aria-label="Preview"
             onKeyDown={preview.onPreviewKeyDown}
             className={cn('min-w-0 outline-none', className)}
+            data-composer-preview
             data-test="composer-preview"
         >
             {preview.segments.length > 0 ? (

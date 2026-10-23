@@ -209,7 +209,7 @@ Sources: [body renderer](resources/js/components/commit-body.tsx), [code blocks]
 
 ### Draft previews
 
-Use the composer's eye button or **⌘/Ctrl+Shift+P** to preview a commit or reply before submitting it. Preview shows the rendered code, emoji, mentions, links, and images, and identifies the link selected for a card. Esc returns from preview to writing.
+Use the composer's eye button or **⌘/Ctrl+Shift+P** to preview a commit, reply, or quote before submitting it. Preview shows the rendered code, emoji, mentions, links, and images, and identifies the link selected for a card. Esc returns from preview to writing.
 
 Draft text is not scanned for secrets before publishing or saving locally.
 

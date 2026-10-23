@@ -188,3 +188,52 @@ test('quotes submit restored images and clear the complete draft only on success
         vi.unstubAllGlobals();
     }
 });
+
+test('escape in the preview returns to writing without closing the quote', () => {
+    const commit = {
+        id: 'quoted',
+        user_id: 'author',
+        user: { username: 'author' },
+        status: 'approved',
+    } as Commit;
+    const button = CommitQuoteButton({ commit })!;
+    const dialog = React.Children.toArray(
+        button.props.children,
+    )[1] as ReactElement<{
+        children: ReactElement<{ commit: Commit; onClose: () => void }>;
+    }>;
+    const composer = dialog.props.children;
+    const renderComposer = composer.type as (
+        props: typeof composer.props,
+    ) => ReactElement<{ onEscapeKeyDown: (event: unknown) => void }>;
+    const { onEscapeKeyDown } = renderComposer(composer.props).props;
+
+    class FakeElement {
+        constructor(private readonly isInPreview: boolean) {}
+
+        closest(selector: string) {
+            return this.isInPreview && selector === '[data-composer-preview]'
+                ? this
+                : null;
+        }
+    }
+
+    vi.stubGlobal('Element', FakeElement);
+    vi.stubGlobal('document', { querySelector: () => null });
+    try {
+        const escapeFrom = (isInPreview: boolean) => {
+            const preventDefault = vi.fn();
+            onEscapeKeyDown({
+                target: new FakeElement(isInPreview),
+                preventDefault,
+            });
+
+            return preventDefault.mock.calls.length;
+        };
+
+        assert.equal(escapeFrom(true), 1);
+        assert.equal(escapeFrom(false), 0);
+    } finally {
+        vi.unstubAllGlobals();
+    }
+});
